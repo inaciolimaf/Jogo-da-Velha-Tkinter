@@ -4,28 +4,28 @@ from PIL import Image, ImageTk
 from Tabuleiro import Tabuleiro
 from Jogador import *
 from tkinter import messagebox
-import time
 
-class JanelaJogo():
-    def __init__(self, nomeJogador1: str, nomeJogador2: str) -> None:
-        self.jogador1 = Jogador(nomeJogador1, "x", 0)
-        self.jogador2 = Jogador(nomeJogador2, "o", 0)
+
+class JanelaJogo:
+    def __init__(self, nome_jogador1: str, nome_jogador2: str) -> None:
+        self.jogador1 = Jogador(nome_jogador1, "x", 0)
+        self.jogador2 = Jogador(nome_jogador2, "o", 0)
         self.tabuleiro = Tabuleiro()
         # Objeto que vai conter os valores do tabuleiro
         self.jogada_vez = "x"
         self.quant_jogadas = 0
         self.vencedor = ""
-        self.resultado_Jogador=0
+        self.resultado_Jogador = 0
         self.inicia_a_janela()
 
     def inicia_a_janela(self):
         self.janelaJogo = Tk()
-        self.configuraJanela()
+        self.configura_janela()
         self.atualiza_resultados()
         # Cria o label com os resultados de vitorias
-        self.foto_Vazio = self.__PegaImagemJpg("Vazio.jpg", 60)
-        self.foto_X = self.__PegaImagemJpg("X.jpg", 60)
-        self.foto_O = self.__PegaImagemJpg("Bola.jpg", 60)
+        self.foto_Vazio = self.__pega_imagem_jpg("Vazio.jpg", 60)
+        self.foto_X = self.__pega_imagem_jpg("X.jpg", 60)
+        self.foto_O = self.__pega_imagem_jpg("Bola.jpg", 60)
         # Pega cada imagem para colocar no tabuleiro
         self.atualiza_botao_tabuleiro()
         # Cria o tabuleiro na janela
@@ -113,20 +113,22 @@ class JanelaJogo():
             self.resultado_Jogador.destroy()
             # Apaga o Label se ele já estiver criado
         self.resultado_Jogador = Label(
-            self.janelaJogo, text=f"Vitórias:\n{self.jogador1.nome}: {self.jogador1.vitorias}\n{self.jogador2.nome}: {self.jogador2.vitorias}\n A vez é do jogador: {vez_do_jogador.nome}", font=("Times", 15))
+            self.janelaJogo, text=f"Vitórias:\n{self.jogador1.nome}: {self.jogador1.vitorias}\n{self.jogador2.nome}: "
+                                  f"{self.jogador2.vitorias}\n A vez é do jogador: {vez_do_jogador.nome}",
+            font=("Times", 15))
         self.resultado_Jogador.grid(row=0, column=0)
 
-    def configuraJanela(self):
+    def configura_janela(self):
         self.janelaJogo.geometry('+500+200')
         # Configura a posição incial da janela
         self.janelaJogo.title("Jogo da Velha")
         self.janelaJogo.resizable(False, False)
         # Não permite que a janela seja mudada de tamanho
-        self.janelaJogo.iconphoto(True, self.__PegaImagemJpg("X.jpg", 15))
+        self.janelaJogo.iconphoto(True, self.__pega_imagem_jpg("X.jpg", 15))
         # Seleciona o icone da janela
 
-
-    def __PegaImagemJpg(self, nome: str, resolucao: int):
+    @staticmethod
+    def __pega_imagem_jpg(nome: str, resolucao: int):
         # Parte necessária porque o Tkinter não suporta arquivos.jpg
         imagem = Image.open(nome)
         # Abre a imagem
